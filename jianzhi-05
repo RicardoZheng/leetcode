@@ -1,0 +1,50 @@
+请实现一个函数，把字符串 s 中的每个空格替换成"%20"。
+
+ 
+
+示例 1：
+
+输入：s = "We are happy."
+输出："We%20are%20happy."
+
+ 
+
+限制：
+
+0 <= s 的长度 <= 10000
+
+来源：力扣（LeetCode）
+链接：https://leetcode-cn.com/problems/ti-huan-kong-ge-lcof
+著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处
+
+//注意单引号给 char，双引号给 string。
+
+solution1:
+class Solution {
+public:
+    string replaceSpace(string s) {
+        if(s.empty()){return s;}
+        int count = 0, len = s.size();
+        for(char c : s){
+            if(c == ' '){
+                count++;
+            }
+        }
+        s.resize(len+ count * 2);
+        for(int i = len - 1, j = s.size() - 1; i < j;){
+            if(s[i] != ' '){
+                s[j] = s[i];
+                i--;
+                j--;
+            }
+            else if(s[i] == ' '){
+                s[j-2] = '%';
+                s[j-1] = '2';
+                s[j] = '0';
+                i--;
+                j = j-3;
+            }
+        }
+        return s;
+    }
+};
