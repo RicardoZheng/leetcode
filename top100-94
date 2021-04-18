@@ -1,0 +1,41 @@
+给定一个二叉树的根节点 root ，返回它的 中序 遍历。
+
+solution1: 递归
+class Solution {
+public:
+    void inorder(TreeNode* root, vector<int>& res) {//加&是因为要修改res的原本的值。不加&会生成一个新的vector，而修改不料原本的值。
+        if(root == nullptr){
+        //if (!root) {
+            return;
+        }
+        inorder(root->left, res);
+        res.push_back(root->val);
+        inorder(root->right,res);
+    }
+    vector<int> inorderTraversal(TreeNode* root) {
+        vector<int> res;
+        inorder(root, res);
+        return res;
+    }
+};
+
+solution2:迭代，利用一个辅助栈，先入根节点，再入左节点，一直搜索到最左的节点。，然后出栈根节点和左节点，把指针移到右节点。
+class Solution {
+public:
+    vector<int> inorderTraversal(TreeNode* root) {
+        vector<int> res;
+        stack<TreeNode*> s;
+        while(root !=nullptr || !s.empty()){
+            //先入根节点，再入左节点
+            while(root !=nullptr){
+                s.push(root);
+                root = root->left;
+            }
+            root = s.top();
+            s.pop();
+            res.push_back(root->val);
+            root = root->right;
+        }
+        return res;
+    }
+};
