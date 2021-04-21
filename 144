@@ -40,3 +40,23 @@ public:
         return res;
     }
 };
+
+迭代法
+利用辅助栈，当辅助栈不为空时，将栈顶弹出，处理（将值赋给res数组），然后将栈顶的right和left压入栈中。
+class Solution {
+public:
+    vector<int> preorderTraversal(TreeNode* root) {
+        stack<TreeNode*> st;
+        vector<int> res;
+        if (root == NULL) return res;
+        st.push(root);
+        while (!st.empty()) {
+            TreeNode* node = st.top();                       // 中
+            st.pop();
+            res.push_back(node->val);
+            if (node->right) st.push(node->right);           // 右（空节点不入栈）
+            if (node->left) st.push(node->left);             // 左（空节点不入栈）
+        } 
+        return res;
+    }
+};
