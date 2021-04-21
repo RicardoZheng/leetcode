@@ -34,7 +34,7 @@ public:
 };
 
 2.迭代法
-只是把right和left入栈顺序交换下，最后Vector反转一下。
+相对前序遍历只是把right和left入栈顺序交换下，最后Vector反转一下。
 class Solution {
 public:
     vector<int> postorderTraversal(TreeNode* root) {
