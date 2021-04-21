@@ -32,3 +32,23 @@ public:
         return ans;
     }
 };
+
+2.迭代法
+class Solution {
+public:
+    vector<int> postorderTraversal(TreeNode* root) {
+        vector<int> res;
+        stack<TreeNode*> st;
+        if(root == nullptr) return res;
+        st.push(root);
+        while(!st.empty()){
+            TreeNode* temp = st.top();
+            st.pop();
+            res.push_back(temp->val);
+            if(temp->left) st.push(temp->left);
+            if(temp->right) st.push(temp->right);
+        }
+        reverse(res.begin(), res.end());
+        return res;
+    }
+};
