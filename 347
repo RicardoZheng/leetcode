@@ -1,0 +1,64 @@
+347. 前 K 个高频元素
+给你一个整数数组 nums 和一个整数 k ，请你返回其中出现频率前 k 高的元素。你可以按 任意顺序 返回答案。
+
+ 
+
+示例 1:
+
+输入: nums = [1,1,1,2,2,3], k = 2
+输出: [1,2]
+示例 2:
+
+输入: nums = [1], k = 1
+输出: [1]
+ 
+
+提示：
+
+1 <= nums.length <= 105
+k 的取值范围是 [1, 数组中不相同的元素的个数]
+题目数据保证答案唯一，换句话说，数组中前 k 个高频元素的集合是唯一的
+ 
+
+进阶：你所设计算法的时间复杂度 必须 优于 O(n log n) ，其中 n 是数组大小
+
+class Solution {
+public:
+    //此处是最小堆的排序函数写法，pair里第一个是数的值，第二个是出现次数
+    static bool cmp(pair<int, int>& m, pair<int, int>& n) {
+        return m.second > n.second;
+    }
+
+    vector<int> topKFrequent(vector<int>& nums, int k) {
+        unordered_map<int, int> occurrences;
+        //哈希表遍历记录出现次数
+        for (auto& v : nums) {
+            occurrences[v]++;
+        }
+        // pair 的第一个元素代表数组的值，第二个元素代表了该值出现的次数
+        //第一个参数表示存储的数据类型，第二个参数表示用vector作为容器来存储，
+        //第三个参数用一个函数来表示排序的方式。decltype此处返回cmp函数的返回值类型。
+        priority_queue<pair<int, int>, vector<pair<int, int>>, decltype(&cmp)> q(cmp);
+
+        //在这里，我们可以利用堆的思想：建立一个小顶堆，然后遍历「出现次数数组」：
+        // 如果堆的元素个数小于 kk，就可以直接插入堆中。
+        // 如果堆的元素个数等于 kk，则检查堆顶与当前出现次数的大小。如果堆顶更大，说明至少有 kk 个数字的出
+        //现次数比当前值大，故舍弃当前值；否则，就弹出堆顶，并将当前值插入堆中。
+        for (auto& [num, count] : occurrences) {
+            if (q.size() == k) {
+                if (q.top().second < count) {
+                    q.pop();
+                    q.emplace(num, count);
+                }
+            } else {
+                q.emplace(num, count);
+            }
+        }
+        vector<int> ret;
+        while (!q.empty()) {
+            ret.emplace_back(q.top().first);
+            q.pop();
+        }
+        return ret;
+    }
+};
