@@ -1,0 +1,19 @@
+string minWindow(string s, string t) {
+int left=0,right=0;
+int valid=0;
+unordered_map<char,int> need,window;
+for(auto i:t) need[i]++;
+while(right<s.size()){
+//不论如何窗口都是要一直增大的
+    char c=s[right];
+// 进行窗口内数据的一系列更新
+
+    right++;
+
+while(//window needs shrink){
+    char d=s[left];
+ //更新结果
+ //更新窗口（进行窗口内数据的一系列更新）
+    left++;
+
+}
