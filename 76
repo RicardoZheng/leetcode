@@ -1,0 +1,69 @@
+给你一个字符串 s 、一个字符串 t 。返回 s 中涵盖 t 所有字符的最小子串。如果 s 中不存在涵盖 t 所有字符的子串，则返回空字符串 "" 。
+
+注意：如果 s 中存在这样的子串，我们保证它是唯一的答案。
+
+ 
+
+示例 1：
+
+输入：s = "ADOBECODEBANC", t = "ABC"
+输出："BANC"
+示例 2：
+
+输入：s = "a", t = "a"
+输出："a"
+ 
+
+提示：
+
+1 <= s.length, t.length <= 105
+s 和 t 由英文字母组成
+
+class Solution {
+public:
+string minWindow(string s, string t) {
+    // 记录最短子串的开始位置和长度
+    int start = 0, minLen = INT_MAX;
+    //left，right是滑动窗口左侧和右侧
+    int left = 0, right = 0;
+    
+    unordered_map<char, int> window;//记录滑动窗口中，各个字符出现的次数
+    unordered_map<char, int> needs;//记录需要寻找最小字串中，各个字符出现的次数
+    for (char c : t) needs[c]++;//记录，记录各个字符出现次数
+
+    int match = 0;//每当window中的一个字符出现次数等于needs中的次数，match就加一，
+                  //当match==needs.size()，也就是所有字符出现次数都相等或大于，就表示这个window满足了
+    
+    while (right < s.size()) {//遍历整个s
+        char c1 = s[right];//c1是window的最右的字符
+        //1. 检测窗口右端是否是要找的字符，是的话则window++，match也更新，right右移
+        if (needs.count(c1)) {//c1出现在needs中，则count返回一
+            window[c1]++;   
+            if (window[c1] == needs[c1]) 
+                match++;
+        }
+        right++;
+        //2. 不断右移，直至needs中所有字符都检测到
+        while (match == needs.size()) {
+            if (right - left < minLen) {
+                //3. 更新最小子串的位置和长度
+                start = left;
+                minLen = right - left;
+            }
+            char c2 = s[left];
+            //4.如果窗口左侧字符是needs中的，更新window--，更新match
+            if (needs.count(c2)) {
+                window[c2]--;
+                if (window[c2] < needs[c2])
+                    match--;
+            }
+            left++;
+        }
+    }
+    //5.返回字符串
+    return minLen == INT_MAX ?
+                "" : s.substr(start, minLen);
+}
+};
+
+时间复杂度O(M + N)
