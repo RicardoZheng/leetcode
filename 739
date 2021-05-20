@@ -8,6 +8,8 @@ class Solution {
 public:
     vector<int> dailyTemperatures(vector<int>& T) {
         int n = T.size();
+        //此处Vector要规定大小，因为之后直接调用了ans[previousindex]
+        //如果使用push_back,就不用指定大小
         vector<int> ans(n);
         stack<int> s;//栈中存储的是天数的数字
         for (int i = 0; i < n; ++i) {
