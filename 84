@@ -1,0 +1,32 @@
+class Solution {
+public:
+    int largestRectangleArea(vector<int>& heights) {
+        int n = heights.size();
+        // vector<int> left(n), right(n, n);
+        vector<int> left(n), right(n,n);//left制定了数组的size为n，right使用n个n来初始化。意思是，当下面的while没有执行时，即栈顶元素已经是最小的了，出不了栈，则此时他的右侧直接是n。
+        
+        stack<int> mono_stack;//单调栈，栈中存的是柱形图的下标
+        for (int i = 0; i < n; ++i) {
+            //如果栈顶元素高度大于等于下一个柱形的高度，且栈不为空，则栈顶元素出栈
+            while (!mono_stack.empty() && heights[mono_stack.top()] >= heights[i]) {
+                //出栈时操作：此时顶端元素的右侧为i
+                right[mono_stack.top()] = i;//栈顶元素的矩形右侧为i，因右侧比栈顶元素小
+                mono_stack.pop();
+            }
+            //经过上面的步骤后，栈顶元素高度肯定比i小，即找到了i的左侧元素
+            left[i] = (mono_stack.empty() ? -1 : mono_stack.top());//求i的左侧元素，如栈为空，left为-1，不为空，为栈顶元素
+            mono_stack.push(i);//把i放入栈中
+        }
+        //求面积
+        int ans = 0;
+        for (int i = 0; i < n; ++i) {
+            ans = max(ans, (right[i] - left[i] - 1) * heights[i]);
+        }
+        return ans;
+    }
+};
+//步骤总结
+// 1。 数组left和right存柱形图i的左侧和右侧坐标。还需要一个辅助单调栈，存的是下标。for遍历i，
+// 2。while遍（非空，i小于栈顶）如果i小于栈顶，即确定栈顶元素的右侧，栈顶出栈
+// 3.while完后，i的左侧就是栈顶，如果栈是空，左侧就是-1
+// 4.出for后，计算面积 ans = max(ans, (right[i] - left[i] - 1) * heights[i]);
