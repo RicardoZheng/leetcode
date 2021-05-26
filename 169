@@ -1,0 +1,23 @@
+//Boyer-Moore 投票算法
+// 如果 x 与 candidate 相等，那么计数器 count 的值增加 1；
+// 如果 x 与 candidate 不等，那么计数器 count 的值减少 1。
+class Solution {
+public:
+    int majorityElement(vector<int>& nums) {
+        int count = 0;
+        int candidate = nums[0];
+        for(int i = 0; i < nums.size(); ++i){
+            if(candidate == nums[i]){
+                count++;
+            }
+            else{
+                count--;
+            }
+            if(count < 0){
+                candidate = nums[i];
+                count = 0;
+            }
+        }
+        return candidate;
+    }
+};
