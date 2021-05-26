@@ -1,0 +1,13 @@
+class Solution {
+public:
+    //如果前边累加后还不如自己本身大，那就把前边的都扔掉，从此自己本身重新开始累加。//
+    int maxSubArray(vector<int>& nums) {
+        int pre = 0;
+        int ans = INT_MIN;//防止第一项是负数
+        for(int i = 0; i < nums.size(); ++i){
+            pre = max(pre + nums[i], nums[i]);
+            ans = max(pre, ans);
+        }
+        return ans;
+    }
+};
