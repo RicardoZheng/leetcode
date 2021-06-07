@@ -1,0 +1,38 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* mergeTwoLists(ListNode* l1, ListNode* l2) {
+        //prehead作为哑节点，方便最后返回
+        ListNode* preHead = new ListNode(-1);   
+
+        ListNode* prev = preHead;
+        //l1，l2都不为空，prev指针指向两表中较小的那一个值，prev作为存储的新链表
+        while(l1 != nullptr && l2 != nullptr){
+            if(l1 -> val < l2 ->val) {
+                prev -> next = l1;
+                l1 = l1 -> next;
+                prev = prev -> next;
+            } else {
+                prev -> next = l2;
+                l2 = l2 -> next;
+                prev = prev -> next;
+            }
+        }
+        // 合并后 l1 和 l2 最多只有一个还未被合并完，我们直接将链表末尾指向未合并完的链表即可
+        if(l1 == nullptr) {
+            prev -> next = l2;
+        } else {
+            prev -> next = l1;
+        }
+        return preHead -> next;
+    }
+};
