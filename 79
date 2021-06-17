@@ -1,0 +1,39 @@
+class Solution {
+public:
+    vector<vector<int>> direction = {{-1,0}, {0,1}, {1,0}, {0,-1}};
+
+
+    bool dfs(vector<vector<char>>& board, string word, vector<vector<bool>>& visited, int start, int x, int y) {
+        //搜索终止条件
+        if(start == word.size() - 1) {
+            if(board[x][y] == word[start]) {
+                return true; 
+            } else {
+                return false;
+            }
+        }
+        if(board[x][y] == word[start]){
+            visited[x][y] = true;
+            for(int i = 0; i < 4; i++){
+                int newX = x + direction[i][0];
+                int newY = y + direction[i][1];
+                if(newX>=0&&newX<board.size()&&newY>=0&&newY<board[0].size()&&!visited[newX][newY]) {
+                    if(dfs(board, word, visited, start + 1, newX, newY)) return true;
+                }
+            }
+            visited[x][y] = false;
+        }
+        return false;
+    }
+
+    bool exist(vector<vector<char>>& board, string word) {
+        vector<bool> line(board[0].size(), false);
+        vector<vector<bool>> visited(board.size(), line);
+        for(int i = 0; i < board.size(); i++) {
+            for(int j = 0; j < board[i].size(); j++) {
+                if(dfs(board, word, visited, 0, i, j)) return true;
+            }
+        }
+        return false;
+    }
+};
