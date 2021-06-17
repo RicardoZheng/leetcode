@@ -1,0 +1,28 @@
+class Solution {
+public:
+    vector<int> path; 
+    vector<vector<int>> res;
+    void backtrack(vector<int>& candidates, int start, int target){
+        //将结果记录到res里的条件
+        if(target==0){
+            res.push_back(path);
+            return;
+        }
+        //停止搜索的条件
+        if(target < 0) {
+            return;
+        }
+        //利用start来规避重复的搜索，适用于不需要计算顺序的情况
+        for(int i=start; i < candidates.size();i++){
+            path.push_back(candidates[i]);
+            // 注意：由于每一个元素可以重复使用，下一轮搜索的起点依然是 i，这里非常容易弄错
+            backtrack(candidates,i,target-candidates[i]);
+            path.pop_back();
+        }
+    }
+
+    vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
+        backtrack(candidates,0,target);
+        return res;
+    }
+};
