@@ -1,0 +1,31 @@
+class Solution {
+public:
+    void dfs(vector<vector<char>>& grid, int row, int col) {
+        //第一步，什么时候停止搜索
+        if(grid[row][col] != '1') {
+            return;
+        }
+        //第二步，标记visited
+        grid[row][col] = '0';
+        //第三步，把cur周围的每一个都套用dfs
+        if(row - 1 >= 0 && grid[row - 1][col] == '1' ) dfs(grid, row - 1, col);
+        if(row + 1 < grid.size() && grid[row + 1][col] == '1'  ) dfs(grid, row + 1, col);
+        if( col - 1 >= 0 && grid[row][col - 1] == '1') dfs(grid, row, col - 1);
+        if(col +1 < grid[0].size() && grid[row][col + 1] == '1' ) dfs(grid, row, col + 1);
+    } 
+    int numIslands(vector<vector<char>>& grid) {
+        int result = 0;
+        int nr = grid.size();
+        if(!nr) return 0;
+        //对所有格子使用dfs。
+        for(int i = 0; i < grid.size(); i++) {
+            for(int j = 0; j < grid[0].size(); j++) {
+                if(grid[i][j] == '1') {
+                    result= result + 1;
+                    dfs(grid, i, j);
+                }
+            }
+        }
+        return result;
+    }
+};
