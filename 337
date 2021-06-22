@@ -1,0 +1,17 @@
+class Solution {
+public:
+    vector<int> robhelper(TreeNode* node) {
+        if(node == nullptr) return{0,0};
+        vector<int> left = robhelper(node -> left);
+        vector<int> right = robhelper(node -> right);
+        vector<int> result(2,0);
+        result[0] = max(left[0] , left[1]) + max(right[0] , right[1]);
+        result[1] = left[0] + right[0] + node-> val;
+        return result;
+    } 
+    int rob(TreeNode* root) {
+        vector<int> res;
+        res = robhelper(root);
+        return max(res[0],res[1]);
+    }
+};
