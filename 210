@@ -1,0 +1,38 @@
+class Solution {
+public:
+    vector<vector<int>> edge;
+    bool valid = true;
+    vector<int> visited;
+    vector<int> res;
+    void dfs(int cur) {
+        visited[cur] = 1;
+        for(auto j : edge[cur]){
+            if (visited[j] == 0) {//0表示未搜索
+                dfs(j);
+            }
+            else if (visited[j] == 1) {//1表示搜索中
+                valid = false;
+                return;
+            }
+        }
+        visited[cur] = 2;
+        res.push_back(cur);
+    }
+    vector<int> findOrder(int numCourses, vector<vector<int>>& prerequisites) {
+        edge.resize(numCourses);
+        visited.resize(numCourses);
+        for(int i = 0; i < prerequisites.size(); i++) {
+            edge[prerequisites[i][0]].push_back(prerequisites[i][1]);  //形成有向图      
+        }
+        for(int i = 0; i < numCourses; i++) {
+            if(visited[i] == 0)
+            dfs(i);
+        }
+        //reverse(res.begin(), res.end());
+        if(valid == 0) {
+            return {};//空数组
+        }
+         else return res;
+        //return valid;
+    }
+};
