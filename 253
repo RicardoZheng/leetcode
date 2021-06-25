@@ -1,0 +1,18 @@
+//上下车法，或叫插旗法
+class Solution {
+public:
+    int minMeetingRooms(vector<vector<int>>& intervals) {
+        map<int, int> mp;
+        int res = 0;
+        for(auto t : intervals) {
+            mp[t[0]]++;
+            mp[t[1]]--;
+        }
+        int sum = 0;
+        for(auto t: mp) {
+            sum = sum + t.second;
+            res = max(sum, res);
+        }
+        return res;
+    }
+};
