@@ -1,0 +1,29 @@
+class Solution {
+public:
+    string longestPalindrome(string s) {
+        vector<vector<int>> dp(s.size(), vector<int>(s.size(), 0));
+        int n =s.size();
+        int maxlenth = 0;
+        int left = 0;
+        int right = 0;
+        //j为列，i为行，因为dp[i][j]依赖于左下角元素dp[i + 1][j - 1]，所以应该先遍历到dp[i + 1][j - 1]，可以先遍历一列，再遍历一行
+            for(int j = 0; j < n; j++) {
+                for(int i = 0; i <= j; i++) {
+                if (s[i] == s[j]) {
+                    if (j - i <= 1) { // 情况一 和 情况二
+                        dp[i][j] = true;
+                    } else if (dp[i + 1][j - 1]) { // 情况三
+                        dp[i][j] = true;
+                    }
+                }
+                if (dp[i][j] && j - i + 1 > maxlenth) {
+                    maxlenth = j - i + 1;
+                    left = i;
+                    right = j;
+                }
+            }
+
+        }
+        return s.substr(left, maxlenth);
+    }
+};
