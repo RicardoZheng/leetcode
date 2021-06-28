@@ -1,0 +1,15 @@
+class Solution {
+public:
+    int change(int amount, vector<int>& coins) {
+        int n = coins.size();
+        vector<int> dp(amount+1, 0);
+        dp[0] = 1;//动态规划的边界是 \textit{dp}[0]=1dp[0]=1。只有当不选取任何硬币时，金额之和才为 00，因此只有 11 种硬币组合。
+        for(int i = 0; i < n; i++) {
+            int coins_cur = coins[i];
+            for (int j = coins_cur; j <= amount; j++) {//当硬币无限时，要从前往后遍历，而当一个硬币只能使用一次时，从后往前遍历
+                dp[j] = dp[j - coins_cur] + dp[j];
+            }
+        }
+        return dp[amount];
+    }
+};
