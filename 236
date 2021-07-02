@@ -1,0 +1,20 @@
+class Solution {
+public:
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        if(root == nullptr) return nullptr;//1.停止条件，root为零，或root为pq中的一个
+        if(root == p || root == q) return root;
+        //2.后序遍历
+        TreeNode* left = lowestCommonAncestor(root -> left, p, q);
+        TreeNode* right = lowestCommonAncestor(root -> right, p, q);
+        //判断root
+        if(left != nullptr && right != nullptr) return root;
+        if(left != nullptr) return left;
+        if(right != nullptr) return right;
+        return nullptr;
+        //情况 1，如果p和q都在以root为根的树中，那么left和right一定分别是p和q（从 base case 看出来的）。
+
+        //情况 2，如果p和q都不在以root为根的树中，直接返回null。
+
+        //情况 3，如果p和q只有一个存在于root为根的树中，函数返回该节点
+    }
+};
