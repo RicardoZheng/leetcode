@@ -1,0 +1,28 @@
+class Solution {
+public:
+    unordered_map<int, int> mp;
+    TreeNode* build(vector<int>& preorder, vector<int>& inorder, int preleft, int preright, int inleft, int inright) {
+        //1.停止迭代条件
+        if(left > right) ) {
+            return nullptr;
+        }
+        //2. 根据题意获得当前root值
+        TreeNode* root = new TreeNode(preorder[preleft]);
+        int in_root_index = mp[preorder[preleft]];
+        int left_size = in_root_index - inleft; 
+        //3.左右子树迭代
+        root -> left = build(preorder, inorder, preleft + 1, preleft + left_size, inleft, in_root_index - 1);
+        root -> right = build(preorder, inorder, preleft + left_size + 1, preright, in_root_index + 1, inright);
+        //4.返回root
+        return root;
+    }
+    TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
+        //哈希表（用于105题）
+        int n = preorder.size();
+        for(int i = 0; i < n; i++) {
+            mp[inorder[i]] = i;
+        }
+        //返回 build
+        return build(preorder, inorder, 0, n - 1, 0, n - 1);
+    }
+};
