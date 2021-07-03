@@ -1,0 +1,18 @@
+class Solution {
+public:
+    int sum =  INT_MIN;
+    int gain(TreeNode* root) {
+        if(root == nullptr) return 0;
+        int left = max(gain(root->left), 0);//左右子树的贡献度，只有大于零的才考虑。否则舍弃。
+        int right = max(gain(root->right), 0);
+        int priceNewpath = left + right + root->val;//当前节点最长路径
+        sum = max(sum, priceNewpath);//一个全局变量记录最长路径
+        int node_gain = root->val + max(left, right);//单个节点贡献度
+        return node_gain;
+    } 
+    int maxPathSum(TreeNode* root) {
+        if(root == nullptr) return 0;
+        gain(root);
+        return sum;
+    }
+};
