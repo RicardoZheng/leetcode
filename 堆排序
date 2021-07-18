@@ -1,0 +1,36 @@
+    void MergeSort(int left, int right, vector<int>& arr, vector<int>& copy) {
+        if(left >= right) return;
+        int mid = left + (right - left)/2;
+        int low1 = left; int high1 = mid; int low2 = mid + 1; int high2 = right; 
+        MergeSort(low1, high1, copy, arr);//此处arr和copy互换，使排序好的的部分作为arr，未排序好的部分作为copy，技巧。
+        MergeSort(low2, high2, copy, arr);//
+        int index = low1;
+        while(low1 <= high1 && low2 <= high2) {
+            if(arr[low1] < arr[low2]) {
+                copy[index] = arr[low1];
+                index++;
+                low1++;
+            } else {
+                copy[index] = arr[low2];
+                index++;
+                low2++;
+            }
+        }
+        while(low1 <= high1) {
+                copy[index] = arr[low1];
+                index++;
+                low1++;
+        }
+        while(low2 <= high2) {
+                copy[index] = arr[low2];
+                index++;
+                low2++;
+        }
+    }
+    vector<int> MySort(vector<int>& arr) {
+        // write code here
+        vector<int> copy(arr);
+        MergeSort(0, arr.size() - 1, arr, copy);
+        return copy;
+    }
+};
